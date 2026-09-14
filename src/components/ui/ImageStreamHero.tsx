@@ -94,22 +94,29 @@ const PATH: Required<CorridorPath> = {
   stops: 24,
 }
 
+/**
+ * Where a card sits at `u` — 0 as it is born on the axis, 1 as it leaves the
+ * frame. Shared by the keyframes and by the static pose each card is given, so
+ * a still frame and a moving one are traced from the same curve.
+ */
+function pose(dir: 1 | -1, u: number, p: Required<CorridorPath>) {
+  // Geometric in apparent size, so consecutive cards keep a constant size
+  // ratio and the ribbon stays solid at both ends.
+  const scale = (p.birthHeight / p.cardHeight) * Math.pow(p.exitHeight / p.birthHeight, u)
+  const z = p.perspective * (1 - 1 / scale)
+  const rail = p.railExit - (p.railExit - p.railBirth) * Math.pow(1 - u, p.fan)
+  const turn = p.turnBirth + (p.turnExit - p.turnBirth) * u
+  return `translate3d(${(dir * rail).toFixed(2)}cqw,0,${z.toFixed(2)}cqw) rotateY(${(
+    -dir * turn
+  ).toFixed(2)}deg)`
+}
+
 /** Sample the path once so the CSS keyframes trace the real curve. */
 function keyframes(dir: 1 | -1, name: string, p: Required<CorridorPath>) {
   const steps: string[] = []
   for (let s = 0; s <= p.stops; s++) {
     const u = s / p.stops
-    // Geometric in apparent size, so consecutive cards keep a constant size
-    // ratio and the ribbon stays solid at both ends.
-    const scale = (p.birthHeight / p.cardHeight) * Math.pow(p.exitHeight / p.birthHeight, u)
-    const z = p.perspective * (1 - 1 / scale)
-    const rail = p.railExit - (p.railExit - p.railBirth) * Math.pow(1 - u, p.fan)
-    const turn = p.turnBirth + (p.turnExit - p.turnBirth) * u
-    steps.push(
-      `${(u * 100).toFixed(2)}%{transform:translate3d(${(dir * rail).toFixed(
-        2,
-      )}cqw,0,${z.toFixed(2)}cqw) rotateY(${(-dir * turn).toFixed(2)}deg)}`,
-    )
+    steps.push(`${(u * 100).toFixed(2)}%{transform:${pose(dir, u, p)}}`)
   }
   return `@keyframes ${name}{${steps.join('')}}`
 }
@@ -181,10 +188,19 @@ export function ImageStreamHero({
   const css = React.useMemo(
     () =>
       `${keyframes(1, right, p)}${keyframes(-1, left, p)}` +
-      // Pausing rather than disabling keeps the corridor whole: every card is
-      // already dropped mid-flight by its negative delay, so it freezes as a
-      // finished still instead of collapsing onto the axis.
-      `@media(prefers-reduced-motion:reduce){.${card}{animation-play-state:paused}}`,
+      // Switched off rather than paused, because each card also carries a
+      // static `transform` for exactly this case — the corridor stands still
+      // and stays whole.
+      //
+      // Pausing looks like the obvious move and does not work. A paused
+      // animation whose delay is negative never applies a keyframe in Chrome,
+      // and `animation-fill-mode` is `none`, so the cards would render with no
+      // transform at all — every one of them stacked on the axis at its
+      // untransformed size, which is the exact collapse the negative delays
+      // exist to avoid. `!important` is load-bearing either way: the cards set
+      // the `animation` *shorthand* inline, and inline style outranks any
+      // stylesheet rule that is not `!important`.
+      `@media(prefers-reduced-motion:reduce){.${card}{animation:none!important}}`,
     [right, left, card, p],
   )
 
@@ -205,7 +221,10 @@ export function ImageStreamHero({
         }}
       >
         <div className="absolute inset-0" style={{ transformStyle: 'preserve-3d' }}>
-          {[right, left].map((name) =>
+          {([
+            [right, 1],
+            [left, -1],
+          ] as const).map(([name, dir]) =>
             Array.from({ length: cards }, (_, i) => {
               // Both rails walk the same sequence, so the left side mirrors
               // the right at every depth.
@@ -226,6 +245,11 @@ export function ImageStreamHero({
                     // Negative delay drops each card mid-flight, so the
                     // corridor is already full on the first frame.
                     animationDelay: `${-(i * speed) / cards}s`,
+                    // The same place on the curve, written as a plain
+                    // transform. The running animation overrides it; when the
+                    // animation is switched off for reduced motion this is
+                    // what holds the corridor open.
+                    transform: pose(dir, i / cards, p),
                     backfaceVisibility: 'hidden',
                   }}
                 >

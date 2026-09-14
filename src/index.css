@@ -162,18 +162,6 @@
   }
 }
 
-/* Home hero on phones and tablets: two rails of plates drift past the edges
-   of the frame. The track holds the plates twice over, so a half-turn lands
-   back on an identical frame and the loop has no seam. */
-@keyframes plate-rail {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-  to {
-    transform: translate3d(0, -50%, 0);
-  }
-}
-
 /* ------------------------------------------------------------------
    Base
    ------------------------------------------------------------------ */
@@ -379,44 +367,6 @@
     background-size: 180px 180px;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
   }
-}
-
-/* The plate rails in the home hero on phones and tablets. Each rail is solid
-   at the outer edge of the window and dissolves into the black before it
-   reaches the centred type, so the food frames the words instead of running
-   underneath them. `-webkit-` first for iOS below 16.4. */
-@utility plate-rail-left {
-  -webkit-mask-image: linear-gradient(
-    to right,
-    rgb(0 0 0) 0%,
-    rgb(0 0 0 / 0.8) 22%,
-    rgb(0 0 0 / 0.22) 58%,
-    transparent 86%
-  );
-  mask-image: linear-gradient(
-    to right,
-    rgb(0 0 0) 0%,
-    rgb(0 0 0 / 0.8) 22%,
-    rgb(0 0 0 / 0.22) 58%,
-    transparent 86%
-  );
-}
-
-@utility plate-rail-right {
-  -webkit-mask-image: linear-gradient(
-    to left,
-    rgb(0 0 0) 0%,
-    rgb(0 0 0 / 0.8) 22%,
-    rgb(0 0 0 / 0.22) 58%,
-    transparent 86%
-  );
-  mask-image: linear-gradient(
-    to left,
-    rgb(0 0 0) 0%,
-    rgb(0 0 0 / 0.8) 22%,
-    rgb(0 0 0 / 0.22) 58%,
-    transparent 86%
-  );
 }
 
 /* Numerals that line up in columns — prices, phone numbers, hours. */

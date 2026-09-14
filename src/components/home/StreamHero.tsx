@@ -1,9 +1,12 @@
 import { Link } from 'react-router-dom'
-import { HeroPlateFrame } from '@/components/home/HeroPlateFrame'
 import { BorderBeam } from '@/components/ui/BorderBeam'
 import { Button } from '@/components/ui/Button'
 import { ChevronDownIcon, WhatsAppIcon } from '@/components/ui/Icons'
-import { ImageStreamHero, type StreamImage } from '@/components/ui/ImageStreamHero'
+import {
+  ImageStreamHero,
+  type CorridorPath,
+  type StreamImage,
+} from '@/components/ui/ImageStreamHero'
 import { siteConfig } from '@/config/site'
 import { useSiteLink } from '@/context/siteContentContext'
 import { dishImages } from '@/data/menu'
@@ -24,11 +27,15 @@ import type { DishImage } from '@/types'
  * hairline rules, one yellow button, and the four facts a passer-by actually
  * needs held on the brass rail at the bottom.
  *
- * The corridor is a wide-screen device — it is measured in `cqw`, so a narrow
- * window squashes it into a band across the middle of the type. Phones and
- * tablets therefore get `HeroPlateFrame` instead: the same black room and the
- * same food, rebuilt as two rails down the edges with the words in the clear
- * centre. Everything from `lg` up is the corridor, unchanged.
+ * Phones run that same corridor, not a substitute for it. Every length in it
+ * is `cqw` — a share of the container's width — so the shape is already
+ * resolution-independent. What a narrow window cannot take is the desktop
+ * *geometry*, which sends the rails out through dead centre and lays a band of
+ * cards across the type. `phonePath` re-aims that geometry rather than
+ * replacing it: cards are born out near the edges instead of on the axis, so
+ * each rail hugs its own side of the window and the middle stays black for the
+ * words. Same component, same keyframes, same motion — smaller cards on a
+ * different line. Everything from `lg` up is untouched.
  */
 
 /** Wraps a dish photograph as a corridor card, using every width on disk. */
@@ -64,6 +71,53 @@ const corridor: StreamImage[] = [
 
 /** Cards per rail. The frontmost on the first frame is `CARDS - 1`. */
 const CARDS = 10
+
+/**
+ * The same corridor, re-aimed for a tall, narrow window.
+ *
+ * `railBirth` does most of the work, and it is positive here where the
+ * desktop's is negative: a card is born out on its own side of the frame
+ * rather than across the axis, so the centre is never opened and never has to
+ * be plugged — it is simply never used. The number looks enormous next to the
+ * desktop's -11 because `rail` is multiplied by the card's own projected
+ * scale, and a newborn's is 0.133: 248 world units out lands 33cqw from centre
+ * on screen. The card then holds that line as it grows and only runs for the
+ * edge over the last third of the trip.
+ *
+ * What that buys is a floor, not an average. Feeding these numbers back
+ * through the projection, the inner edge of the ribbon — `rail * scale` less
+ * half the card's projected width — bottoms out at 32cqw from the axis and
+ * spends most of the cycle around 35cqw. So the middle ~64% of the window is
+ * clear of cards at every instant and at every width, which is the lane the
+ * type is given below. The desktop hero holds the same discipline: its text
+ * column ends where its rails begin.
+ *
+ * `exitHeight` is the card-size dial. 88cqw is a 343px-tall card at the mouth
+ * of the rail on a 390px phone, against the desktop's 46cqw of a 1440px
+ * window — 662px. The images and the card count are the desktop's, untouched:
+ * only the flight path and the pace are re-cut for the shape of the window.
+ */
+const phonePath: CorridorPath = {
+  /*
+    A taller, narrower card than the desktop's 18x25. A phone hero is a tall
+    box viewed through a thin lane, and trading width for height buys the rail
+    more of the edge for the same intrusion toward the type.
+  */
+  cardWidth: 15,
+  cardHeight: 30,
+  birthHeight: 4,
+  exitHeight: 88,
+  railBirth: 248,
+  railExit: 28,
+  fan: 2.6,
+}
+
+/**
+ * Quicker than the desktop's 34s because the on-screen journey is shorter; the
+ * same figure in seconds would read as a stall. Cards reaching the edge per
+ * second then lands within a tenth of the desktop rate.
+ */
+const PHONE_SPEED = 30
 
 interface RailItem {
   label: string
@@ -208,15 +262,74 @@ export function StreamHero() {
             />
           </>
         ) : (
-          /* Phones and tablets: the food frames the type from both edges. */
-          <HeroPlateFrame animate={!prefersReducedMotion} />
+          /*
+            Phones and tablets: the same corridor, flown on `phonePath`, so the
+            two rails run down the left and right edges with the type in the
+            clear middle. It is mounted under `prefers-reduced-motion` as well
+            — `ImageStreamHero` pauses its own cards from inside, which holds
+            the ribbon as a finished still rather than taking the food off the
+            page.
+          */
+          <>
+            <ImageStreamHero
+              images={corridor}
+              cards={CARDS}
+              speed={PHONE_SPEED}
+              /* A shade above the desktop's 47: the rails then sit across the
+                 wordmark and the paragraph rather than down by the buttons. */
+              axis={46}
+              path={phonePath}
+              /* Sized, not positioned — see the note on the desktop corridor. */
+              className="h-full w-full"
+            />
+
+            {/*
+              The scrims, in the desktop hero's order but cut for a narrow
+              frame: an overall veil; a centre well deep enough to carry the
+              type and no wider, since the rails are only 25cqw out and the
+              food has to stay legible as food; the warm ceiling light across
+              the top; the black band the fixed header dissolves into; the
+              deep floor that carries the brass rail; and a vignette to bind
+              the frame.
+            */}
+            <div aria-hidden="true" className="absolute inset-0 bg-ink-950/22" />
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 bg-[radial-gradient(58%_48%_at_50%_44%,rgb(8_8_7/0.95),rgb(8_8_7/0.8)_46%,rgb(8_8_7/0.36)_74%,transparent_100%)]"
+            />
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 bg-[radial-gradient(85%_36%_at_50%_0%,rgb(207_162_53/0.15),transparent_72%)]"
+            />
+            <div
+              aria-hidden="true"
+              className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-ink-950 via-ink-950/75 to-transparent"
+            />
+            <div
+              aria-hidden="true"
+              className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-ink-950 via-ink-950/85 to-transparent"
+            />
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 bg-[radial-gradient(120%_82%_at_50%_50%,transparent_58%,rgb(8_8_7/0.34))]"
+            />
+          </>
         )}
       </div>
 
       <div className="relative flex min-h-[min(96svh,52rem)] flex-col">
         <div className="flex flex-1 items-center">
           <div className="mx-auto w-full max-w-[88rem] px-6 pt-[calc(72px+2.5rem)] pb-9 text-center sm:px-8 sm:pt-[calc(80px+3.5rem)] sm:pb-10 lg:px-10">
-            <div className="mx-auto max-w-3xl">
+            {/*
+              The lane. `phonePath` keeps the rails clear of the middle ~64% of
+              the window at every instant, so the column the type is set in is
+              capped to exactly that and the two never meet — the same
+              arrangement the desktop hero has always had, where the text
+              column stops short of where the corridor opens out. Released at
+              `lg`, where the desktop corridor and its own wider channel take
+              over.
+            */}
+            <div className="mx-auto max-w-[64vw] lg:max-w-3xl">
               {/*
                 The two brass rules are dropped on phones. Set beside them, the
                 line needs about 340px to stay on one line, which a 320px
