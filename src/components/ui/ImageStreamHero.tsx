@@ -163,6 +163,21 @@ export type ImageStreamHeroProps = {
   axis?: number
   /** Override any part of the corridor geometry. Merged over the defaults. */
   path?: CorridorPath
+  /**
+   * Keep the corridor running when the OS asks for reduced motion.
+   *
+   * Off by default, and it should stay off wherever the motion is decoration.
+   * The phone hero turns it on because there the corridor *is* the hero: the
+   * rails are the only imagery on the page, and frozen they read as a failed
+   * load rather than as a considered still.
+   *
+   * Overriding the preference is not just a matter of dropping this
+   * component's own rule: `index.css` flattens every animation globally under
+   * the same query, with `!important` on `*` inside `@layer base`. Beating
+   * that needs the re-assertion emitted into the *same* layer — see the note
+   * on the stylesheet below for why a more specific selector alone loses.
+   */
+  ignoreReducedMotion?: boolean
   /** Content rendered above the corridor. */
   children?: React.ReactNode
   className?: string
@@ -174,6 +189,7 @@ export function ImageStreamHero({
   speed = 18,
   axis = 55,
   path,
+  ignoreReducedMotion = false,
   children,
   className,
   ...props
@@ -200,8 +216,32 @@ export function ImageStreamHero({
       // exist to avoid. `!important` is load-bearing either way: the cards set
       // the `animation` *shorthand* inline, and inline style outranks any
       // stylesheet rule that is not `!important`.
-      `@media(prefers-reduced-motion:reduce){.${card}{animation:none!important}}`,
-    [right, left, card, p],
+      //
+      // Under `ignoreReducedMotion` the same query does the opposite job: it
+      // puts back the three properties the global reset in `index.css` takes
+      // away. Longhands, not the shorthand, so the negative `animationDelay`
+      // each card sets inline survives — the shorthand would reset it to 0 and
+      // stack every card on the axis. Duration is restated because the reset
+      // crushes it to 0.01ms; iteration count because the reset pins it to 1;
+      // timing function and play state because they are cheap to assert and
+      // the requirement is an unbroken linear loop.
+      //
+      // `@layer base` is the load-bearing part, and it is not decoration. That
+      // reset lives in `index.css`'s own `@layer base`, and for *important*
+      // declarations the cascade inverts: layer order is compared before
+      // specificity, and a layered `!important` beats an unlayered one however
+      // specific the selector. Emitted bare, the rule below loses to `*` and
+      // the cards sit frozen with a 0.01ms duration. Emitted into the same
+      // layer, the comparison falls through to specificity, where the card's
+      // class outranks `*` and the corridor runs.
+      (ignoreReducedMotion
+        ? `@layer base{@media(prefers-reduced-motion:reduce){.${card}{` +
+          `animation-duration:${speed}s!important;` +
+          `animation-iteration-count:infinite!important;` +
+          `animation-timing-function:linear!important;` +
+          `animation-play-state:running!important}}}`
+        : `@media(prefers-reduced-motion:reduce){.${card}{animation:none!important}}`),
+    [right, left, card, p, ignoreReducedMotion, speed],
   )
 
   return (

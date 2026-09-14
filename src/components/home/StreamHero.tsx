@@ -265,10 +265,13 @@ export function StreamHero() {
           /*
             Phones and tablets: the same corridor, flown on `phonePath`, so the
             two rails run down the left and right edges with the type in the
-            clear middle. It is mounted under `prefers-reduced-motion` as well
-            — `ImageStreamHero` pauses its own cards from inside, which holds
-            the ribbon as a finished still rather than taking the food off the
-            page.
+            clear middle.
+
+            It keeps running under `prefers-reduced-motion` — see
+            `ignoreReducedMotion` below. That is a deliberate exception to the
+            rule the rest of this file follows, and it is scoped to this branch
+            alone: the desktop hero above still swaps to a held photograph when
+            the setting is on.
           */
           <>
             <ImageStreamHero
@@ -279,6 +282,15 @@ export function StreamHero() {
                  wordmark and the paragraph rather than down by the buttons. */
               axis={46}
               path={phonePath}
+              /*
+                On a phone the corridor is not decoration laid over a hero — it
+                is the whole backdrop, and the only imagery on the first screen.
+                Held still it reads as a broken image rather than as a chosen
+                still, so here the loop outranks the preference and runs on.
+                The desktop branch, which has a real photograph to fall back to,
+                keeps respecting it.
+              */
+              ignoreReducedMotion
               /* Sized, not positioned — see the note on the desktop corridor. */
               className="h-full w-full"
             />
