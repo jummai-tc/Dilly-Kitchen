@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { BorderBeam } from '@/components/ui/BorderBeam'
 import { Button } from '@/components/ui/Button'
 import { ChevronDownIcon, WhatsAppIcon } from '@/components/ui/Icons'
 import { ImageStreamHero, type StreamImage } from '@/components/ui/ImageStreamHero'
@@ -298,33 +299,54 @@ export function StreamHero() {
           The brass rail. Every table in the room is a black top bounded by a
           thin brass edge; the same edge closes the hero and carries the four
           facts a passer-by actually needs.
+
+          The entry animation stays on this outer div. `BorderBeam` sets an
+          `animation` shorthand on the element it renders, from a selector no
+          utility class can outrank, so a beam placed on the animated element
+          would swallow the rise.
         */}
-        <div className="relative animate-[var(--animate-line-rise)] border-t border-gold-500/30 bg-ink-950/70 backdrop-blur-md [animation-delay:700ms]">
-          <div className="mx-auto grid w-full max-w-[88rem] grid-cols-2 gap-x-6 gap-y-6 px-5 py-6 text-left sm:px-8 lg:grid-cols-4 lg:gap-x-10 lg:px-10 lg:py-7">
-            {rail.map((item, index) => (
-              <div
-                key={item.label}
-                className={cn(index > 0 && 'lg:border-l lg:border-cream-100/10 lg:pl-10')}
-              >
-                <p className="eyebrow text-[0.6rem] text-gold-400/80">{item.label}</p>
-                <p
-                  className={cn('mt-1.5 text-sm font-medium text-cream-100', item.numeric && 'tnum')}
-                >
-                  {item.to ? (
-                    <Link to={item.to} className="transition-colors hover:text-brand-500">
-                      {item.value}
-                    </Link>
-                  ) : item.href ? (
-                    <a href={item.href} className="transition-colors hover:text-brand-500">
-                      {item.value}
-                    </a>
-                  ) : (
-                    item.value
-                  )}
-                </p>
+        <div className="animate-[var(--animate-line-rise)] [animation-delay:700ms]">
+          {/*
+            One warm light travels the rail, the way the room's ceiling lamps
+            run along real brass trim. It stays inside the strip: the beam
+            wrapper clips to its own box, so nothing bleeds onto the cream
+            section below. Square corners are passed rather than auto-detected
+            — the rail is full-bleed and has no radius to read. Slow, and at
+            half strength: the hero's one loud element is the yellow button
+            above, and this has to stay behind it.
+          */}
+          <BorderBeam size="md" borderRadius={0} duration={9} strength={0.5}>
+            <div className="relative border-t border-gold-500/30 bg-ink-950/70 backdrop-blur-md">
+              <div className="mx-auto grid w-full max-w-[88rem] grid-cols-2 gap-x-6 gap-y-6 px-5 py-6 text-left sm:px-8 lg:grid-cols-4 lg:gap-x-10 lg:px-10 lg:py-7">
+                {rail.map((item, index) => (
+                  <div
+                    key={item.label}
+                    className={cn(index > 0 && 'lg:border-l lg:border-cream-100/10 lg:pl-10')}
+                  >
+                    <p className="eyebrow text-[0.6rem] text-gold-400/80">{item.label}</p>
+                    <p
+                      className={cn(
+                        'mt-1.5 text-sm font-medium text-cream-100',
+                        item.numeric && 'tnum',
+                      )}
+                    >
+                      {item.to ? (
+                        <Link to={item.to} className="transition-colors hover:text-brand-500">
+                          {item.value}
+                        </Link>
+                      ) : item.href ? (
+                        <a href={item.href} className="transition-colors hover:text-brand-500">
+                          {item.value}
+                        </a>
+                      ) : (
+                        item.value
+                      )}
+                    </p>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </div>
+          </BorderBeam>
         </div>
       </div>
     </section>

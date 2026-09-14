@@ -1,5 +1,6 @@
 import { Container } from '@/components/ui/Container'
 import { Button } from '@/components/ui/Button'
+import { BorderBeam } from '@/components/ui/BorderBeam'
 import { ExternalActionButton } from '@/components/ui/ExternalActionButton'
 import { WhatsAppIcon } from '@/components/ui/Icons'
 import { siteConfig, whatsappLink, whatsappMessages } from '@/config/site'
@@ -39,10 +40,12 @@ export function WhatsAppCta({
             <p className="mt-4 text-base leading-relaxed text-cream-200/75">{description}</p>
 
             <div className="mt-9 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-              <Button href={whatsappLink(message)} size="lg" className="w-full sm:w-auto">
-                <WhatsAppIcon className="size-[1.15em]" />
-                WhatsApp <span className="tnum">{siteConfig.contact.phoneDisplay}</span>
-              </Button>
+              <BorderBeam size="pulse-outside" strength={0.75} className="flex w-full sm:w-auto">
+                <Button href={whatsappLink(message)} size="lg" className="w-full">
+                  <WhatsAppIcon className="size-[1.15em]" />
+                  WhatsApp <span className="tnum">{siteConfig.contact.phoneDisplay}</span>
+                </Button>
+              </BorderBeam>
               <ExternalActionButton
                 link="uberEats"
                 variant="outline-dark"
