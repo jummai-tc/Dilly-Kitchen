@@ -1,0 +1,2 @@
+# SPA fallback for Netlify-style hosts so deep links like /menu resolve.
+/*  /index.html  200

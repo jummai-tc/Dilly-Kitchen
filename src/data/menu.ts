@@ -1,0 +1,608 @@
+/**
+ * Menu data — transcribed from the Dilly Kitchen menu supplied by the business.
+ * Prices are in GBP and are taken from that menu; nothing here is invented.
+ *
+ * BACKEND SEAM: replace the exported arrays with a fetch from your API/Supabase
+ * table of the same shape. `services/menuService.ts` is the single place that
+ * reads this file, so only that file needs to change.
+ */
+import type { DishImage, MenuCategory, MenuItem } from '@/types'
+
+/** Helper that keeps image records terse and consistent. */
+function dish(
+  slug: string,
+  aspectRatio: number,
+  alt: string,
+  widths: number[] = [480, 800, 1400],
+): DishImage {
+  return { base: `/images/dishes/${slug}`, widths, aspectRatio, alt }
+}
+
+/** Photographs supplied by the business, measured from the optimised files. */
+export const dishImages = {
+  beefSuya: dish('beef-suya', 800 / 861, 'Skewers of grilled beef suya dusted with rich, spicy suya seasoning'),
+  efoRiro: dish('efo-riro', 1, 'Bowl of efo riro, a vibrant Yoruba spinach stew simmered with peppers and assorted meat', [480, 800]),
+  friedPlantain: dish('fried-plantain', 800 / 757, 'Golden slices of sweet fried plantain served in a bowl'),
+  friedRice: dish('fried-rice', 800 / 842, 'Nigerian fried rice served with grilled protein and fried plantain'),
+  friedYam: dish('fried-yam', 800 / 729, 'Crisp golden fried yam wedges served with peppered sauce'),
+  grilledCroaker: dish('grilled-croaker-fish', 800 / 737, 'Whole grilled croaker fish in peppered marinade with fried plantain'),
+  grilledFishPrawns: dish('grilled-fish-prawns', 800 / 1066, 'Whole grilled fish smothered in peppers and onions, crowned with prawns and served with fried plantain', [480, 800, 1080]),
+  isiEwu: dish('isi-ewu', 800 / 1037, 'Isi-Ewu — tender goat head in a rich peppered palm-oil sauce, topped with sliced onions and utazi'),
+  jollofChicken: dish('jollof-rice-chicken', 800 / 712, 'Plate of smoky Nigerian jollof rice served with grilled chicken'),
+  meatPie: dish('meat-pie', 800 / 1065, 'Freshly baked Nigerian meat pies with a golden pastry crust', [480, 800]),
+  okraSoup: dish('okra-soup', 1017 / 927, 'Plate of okra soup with assorted meat and tripe, served with a smooth white swallow', [480, 800, 1000]),
+  puffPuff: dish('puff-puff', 800 / 887, 'Golden Nigerian puff puff — soft, sweet, deep-fried dough balls'),
+  spaghettiJollof: dish('spaghetti-jollof', 1380 / 1810, 'Plate of spaghetti jollof in a bold tomato and pepper sauce, served with peppered chicken', [480, 800, 1380]),
+  tilapiaPepperSoup: dish('tilapia-pepper-soup', 800 / 825, 'Bowl of tilapia pepper soup in a spicy, herb-rich broth'),
+  whiteRiceStew: dish('white-rice-stew', 800 / 742, 'Steamed white rice with peppered tomato stew and fried plantain'),
+} as const
+
+export const menuCategories: MenuCategory[] = [
+  {
+    id: 'starters',
+    name: 'Starters',
+    blurb: 'First impressions — warm broths and small plates made for sharing.',
+  },
+  {
+    id: 'rice-dishes',
+    name: 'Rice Dishes',
+    blurb: 'Our signature mains, smoky and full of flavour.',
+    note: 'Served with sweet fried plantain.',
+  },
+  {
+    id: 'traditional-soups',
+    name: 'Traditional Soups',
+    blurb: 'Bowl comfort — slow-built soups from across Nigeria.',
+    note: 'Served with semovita, pounded yam or eba. Protein options: assorted meat, beef, fish or chicken.',
+  },
+  {
+    id: 'swallows',
+    name: 'Swallows',
+    blurb: 'The perfect partner for every bowl of soup.',
+    note: 'Choose your swallow when you order a traditional soup.',
+  },
+  {
+    id: 'grills-and-suya',
+    name: 'Grills & Suya',
+    blurb: 'Char-grilled, spice-rubbed and finished over open heat.',
+  },
+  {
+    id: 'meat-and-fish',
+    name: 'Meat & Fish',
+    blurb: 'Delicacies prepared the traditional way.',
+  },
+  {
+    id: 'sides',
+    name: 'Sides',
+    blurb: 'Perfect companions for any main.',
+  },
+  {
+    id: 'drinks',
+    name: 'Drinks',
+    blurb: 'Soft drinks, beers and wine to finish the table.',
+  },
+  {
+    id: 'desserts',
+    name: 'Desserts',
+    blurb: 'Sweet endings, the Nigerian way.',
+  },
+]
+
+export const menuItems: MenuItem[] = [
+  // ---------------------------------------------------------------- STARTERS
+  {
+    id: 'assorted-pepper-soup',
+    name: 'Assorted Pepper Soup',
+    description:
+      'A warm, aromatic broth infused with traditional spices and loaded with assorted meats. Light, spicy and deeply comforting.',
+    price: 15,
+    categoryId: 'starters',
+    dietary: [],
+    spiceLevel: 3,
+  },
+  {
+    id: 'catfish-pepper-soup',
+    name: 'Catfish Pepper Soup',
+    description:
+      'Fresh catfish simmered in a fragrant herbal pepper soup base. Bold, spicy and full of natural flavour.',
+    price: 20,
+    categoryId: 'starters',
+    dietary: ['contains-fish'],
+    spiceLevel: 3,
+  },
+  {
+    id: 'tilapia-pepper-soup',
+    name: 'Tilapia Pepper Soup',
+    description: 'Whole tilapia slow-cooked in a spicy, zesty broth enriched with local herbs.',
+    price: 20,
+    categoryId: 'starters',
+    image: dishImages.tilapiaPepperSoup,
+    dietary: ['contains-fish'],
+    spiceLevel: 3,
+    isFeatured: true,
+  },
+  {
+    id: 'ugba',
+    name: 'Ugba',
+    description:
+      'African oil bean salad prepared with sliced oil beans, palm oil, spices and stockfish, with a gentle hint of heat.',
+    price: 20,
+    categoryId: 'starters',
+    dietary: ['contains-fish'],
+    spiceLevel: 1,
+  },
+  {
+    id: 'garnished-prawns',
+    name: 'Garnished Prawns',
+    description: 'Succulent prawns tossed in an aromatic blend of peppers, herbs and spices.',
+    price: 15,
+    categoryId: 'starters',
+    dietary: ['contains-shellfish'],
+    spiceLevel: 2,
+  },
+  {
+    id: 'garnished-snails',
+    name: 'Garnished Snails (3)',
+    description:
+      'Premium African snails cooked until tender, then sautéed with peppers, onions and rich spices.',
+    price: 25,
+    categoryId: 'starters',
+    dietary: [],
+    spiceLevel: 2,
+  },
+
+  // ------------------------------------------------------------ RICE DISHES
+  {
+    id: 'jollof-fried-rice-chicken',
+    name: 'Jollof or Fried Rice with Chicken',
+    description:
+      'Smoky party jollof or aromatic Nigerian fried rice, served with tender seasoned chicken and sweet fried plantain.',
+    price: 15,
+    categoryId: 'rice-dishes',
+    image: dishImages.jollofChicken,
+    dietary: ['signature'],
+    spiceLevel: 2,
+    options: ['Jollof rice', 'Fried rice'],
+    isFeatured: true,
+  },
+  {
+    id: 'jollof-fried-rice-beef',
+    name: 'Jollof or Fried Rice with Beef',
+    description: 'Smoky jollof or aromatic fried rice served with tender, well-seasoned beef.',
+    price: 18,
+    categoryId: 'rice-dishes',
+    image: dishImages.friedRice,
+    dietary: [],
+    spiceLevel: 2,
+    options: ['Jollof rice', 'Fried rice'],
+  },
+  {
+    id: 'jollof-fried-rice-assorted',
+    name: 'Jollof or Fried Rice with Assorted Meat',
+    description: 'Flavour-packed rice served with a generous selection of assorted meats.',
+    price: 18,
+    categoryId: 'rice-dishes',
+    dietary: [],
+    spiceLevel: 2,
+    options: ['Jollof rice', 'Fried rice'],
+  },
+  {
+    id: 'jollof-fried-rice-cut-fish',
+    name: 'Jollof or Fried Rice with Cut Fish',
+    description: 'Your choice of rice served with seasoned cut fish and sweet fried plantain.',
+    price: 18,
+    categoryId: 'rice-dishes',
+    dietary: ['contains-fish'],
+    spiceLevel: 2,
+    options: ['Jollof rice', 'Fried rice'],
+  },
+  {
+    id: 'jollof-fried-rice-whole-fish',
+    name: 'Jollof or Fried Rice with Whole Fish',
+    description: 'Your choice of rice served with a whole seasoned fish and sweet fried plantain.',
+    price: 25,
+    categoryId: 'rice-dishes',
+    dietary: ['contains-fish'],
+    spiceLevel: 2,
+    options: ['Jollof rice', 'Fried rice'],
+  },
+  {
+    id: 'white-rice-stew-beef',
+    name: 'White Rice & Tomato Stew with Beef',
+    description: 'Steamed white rice, rich peppered tomato stew and tender beef.',
+    price: 20,
+    categoryId: 'rice-dishes',
+    image: dishImages.whiteRiceStew,
+    dietary: [],
+    spiceLevel: 2,
+  },
+  {
+    id: 'white-rice-stew-assorted',
+    name: 'White Rice & Tomato Stew with Assorted Meat',
+    description: 'Steamed white rice and peppered tomato stew served with assorted meats.',
+    price: 18,
+    categoryId: 'rice-dishes',
+    dietary: [],
+    spiceLevel: 2,
+  },
+  {
+    id: 'white-rice-stew-fish',
+    name: 'White Rice & Tomato Stew with Fish',
+    description: 'Steamed white rice and rich peppered tomato stew served with seasoned fish.',
+    price: 20,
+    categoryId: 'rice-dishes',
+    dietary: ['contains-fish'],
+    spiceLevel: 2,
+  },
+  {
+    id: 'white-rice-stew-chicken',
+    name: 'White Rice & Tomato Stew with Chicken',
+    description: 'Steamed white rice and rich peppered tomato stew served with tender chicken.',
+    price: 15,
+    categoryId: 'rice-dishes',
+    dietary: [],
+    spiceLevel: 2,
+  },
+  {
+    id: 'spaghetti-jollof',
+    name: 'Spaghetti Jollof with Any Protein',
+    description: 'Spaghetti cooked in a bold, tomato-rich jollof sauce with your choice of protein.',
+    price: 18,
+    categoryId: 'rice-dishes',
+    image: dishImages.spaghettiJollof,
+    dietary: [],
+    spiceLevel: 2,
+    options: ['Beef', 'Chicken', 'Fish', 'Assorted meat'],
+  },
+  {
+    id: 'special-fried-rice',
+    name: 'Special Fried Rice with Any Protein',
+    description:
+      'Our house fried rice, packed with vegetables and spices, served with your choice of protein.',
+    price: 18,
+    categoryId: 'rice-dishes',
+    dietary: [],
+    spiceLevel: 1,
+    options: ['Beef', 'Chicken', 'Fish', 'Assorted meat'],
+  },
+  {
+    id: 'yam-porridge',
+    name: 'Yam Porridge with Any Protein',
+    description: 'Soft yam cubes simmered in a creamy, tomato-rich sauce with your choice of protein.',
+    price: 18,
+    categoryId: 'rice-dishes',
+    dietary: [],
+    spiceLevel: 2,
+    options: ['Beef', 'Chicken', 'Fish', 'Assorted meat'],
+  },
+
+  // ------------------------------------------------------- TRADITIONAL SOUPS
+  {
+    id: 'egusi-soup',
+    name: 'Egusi Soup',
+    description:
+      'Classic melon-seed soup cooked with leafy greens, rich spices and your chosen protein.',
+    price: 20,
+    categoryId: 'traditional-soups',
+    dietary: ['signature'],
+    spiceLevel: 2,
+    options: ['Assorted meat', 'Beef', 'Fish', 'Chicken'],
+  },
+  {
+    id: 'ogbono-soup',
+    name: 'Ogbono Soup',
+    description: 'Silky draw soup made from wild mango seeds, richly seasoned with traditional spices.',
+    price: 20,
+    categoryId: 'traditional-soups',
+    dietary: [],
+    spiceLevel: 2,
+    options: ['Assorted meat', 'Beef', 'Fish', 'Chicken'],
+  },
+  {
+    id: 'efo-riro',
+    name: 'Efo Riro',
+    description: 'Vibrant Yoruba-style spinach stew simmered with peppers and aromatic spices.',
+    price: 20,
+    categoryId: 'traditional-soups',
+    image: dishImages.efoRiro,
+    dietary: [],
+    spiceLevel: 2,
+    options: ['Assorted meat', 'Beef', 'Fish', 'Chicken'],
+    isFeatured: true,
+  },
+  {
+    id: 'okra-special',
+    name: 'Okra Special',
+    description:
+      'Richly textured okra enhanced with assorted proteins, seafood and vegetables for a fuller meal.',
+    price: 20,
+    categoryId: 'traditional-soups',
+    image: dishImages.okraSoup,
+    dietary: ['contains-shellfish'],
+    spiceLevel: 2,
+  },
+  {
+    id: 'okra-soup',
+    name: 'Okra Soup',
+    description: 'Freshly sliced okra cooked to a perfect draw and lightly seasoned with herbs and spices.',
+    price: 18,
+    categoryId: 'traditional-soups',
+    dietary: [],
+    spiceLevel: 1,
+    options: ['Assorted meat', 'Beef', 'Fish', 'Chicken'],
+  },
+  {
+    id: 'vegetable-soup',
+    name: 'Vegetable Soup',
+    description: 'Leafy vegetable blend cooked with peppers, stock and your chosen protein.',
+    price: 18,
+    categoryId: 'traditional-soups',
+    dietary: [],
+    spiceLevel: 2,
+    options: ['Assorted meat', 'Beef', 'Fish', 'Chicken'],
+  },
+  {
+    id: 'bitterleaf-soup',
+    name: 'Bitterleaf Soup',
+    description:
+      'Bold, earthy soup made with washed bitterleaf, cocoyam paste and traditional seasonings.',
+    price: 22,
+    categoryId: 'traditional-soups',
+    dietary: [],
+    spiceLevel: 2,
+    options: ['Assorted meat', 'Beef', 'Fish', 'Chicken'],
+  },
+  {
+    id: 'oha-soup',
+    name: 'Oha Soup',
+    description:
+      'Comforting Eastern Nigerian soup featuring tender oha leaves, cocoyam and hearty spices.',
+    price: 22,
+    categoryId: 'traditional-soups',
+    dietary: [],
+    spiceLevel: 2,
+    options: ['Assorted meat', 'Beef', 'Fish', 'Chicken'],
+  },
+  {
+    id: 'nsala-soup',
+    name: 'Nsala Soup',
+    description:
+      'Light, peppery broth made without palm oil, traditionally prepared with fish or chicken and thickened with yam.',
+    price: 22,
+    categoryId: 'traditional-soups',
+    dietary: [],
+    spiceLevel: 3,
+    options: ['Fish', 'Chicken'],
+  },
+  {
+    id: 'fishermans-soup',
+    name: "Fisherman's Soup",
+    description:
+      'Luxury seafood soup packed with prawns, fish, crab and shellfish. Rich, spicy and comforting.',
+    price: 27,
+    categoryId: 'traditional-soups',
+    dietary: ['contains-shellfish', 'contains-fish', 'chef-special'],
+    spiceLevel: 3,
+  },
+
+  // ---------------------------------------------------------------- SWALLOWS
+  {
+    id: 'pounded-yam',
+    name: 'Pounded Yam',
+    description: 'Smooth, stretchy pounded yam — the classic partner for a rich traditional soup.',
+    price: null,
+    priceNote: 'Included with any traditional soup',
+    categoryId: 'swallows',
+    dietary: ['vegan'],
+    spiceLevel: 0,
+  },
+  {
+    id: 'semovita',
+    name: 'Semovita',
+    description: 'Soft, light semovita, moulded fresh and served warm alongside your soup.',
+    price: null,
+    priceNote: 'Included with any traditional soup',
+    categoryId: 'swallows',
+    dietary: ['vegan'],
+    spiceLevel: 0,
+  },
+  {
+    id: 'eba',
+    name: 'Eba',
+    description: 'Traditional garri swallow with a gentle bite, made to order for your soup.',
+    price: null,
+    priceNote: 'Included with any traditional soup',
+    categoryId: 'swallows',
+    dietary: ['vegan'],
+    spiceLevel: 0,
+  },
+
+  // --------------------------------------------------------- GRILLS AND SUYA
+  {
+    id: 'beef-suya',
+    name: 'Beef Suya',
+    description:
+      'Thin slices of grilled beef generously rubbed with traditional suya spice. Smoky, spicy and tender.',
+    price: 15,
+    categoryId: 'grills-and-suya',
+    image: dishImages.beefSuya,
+    dietary: ['contains-peanuts', 'signature'],
+    spiceLevel: 3,
+    isFeatured: true,
+  },
+  {
+    id: 'chicken-suya',
+    name: 'Chicken Suya',
+    description:
+      'Char-grilled chicken strips coated in rich suya seasoning, with a juicy street-food finish.',
+    price: 12,
+    categoryId: 'grills-and-suya',
+    dietary: ['contains-peanuts'],
+    spiceLevel: 3,
+  },
+  {
+    id: 'grilled-croaker-fish',
+    name: 'Grilled Croaker Fish',
+    description:
+      'Whole croaker marinated in peppers and spices, then grilled over open heat and served with fried plantain.',
+    price: 25,
+    categoryId: 'grills-and-suya',
+    image: dishImages.grilledCroaker,
+    dietary: ['contains-fish', 'chef-special'],
+    spiceLevel: 2,
+    isFeatured: true,
+  },
+  {
+    id: 'grilled-tilapia',
+    name: 'Grilled Tilapia',
+    description: 'Whole tilapia seasoned with our house spice blend and grilled until smoky and tender.',
+    price: 20,
+    categoryId: 'grills-and-suya',
+    dietary: ['contains-fish'],
+    spiceLevel: 2,
+  },
+
+  // ----------------------------------------------------------- MEAT AND FISH
+  {
+    id: 'nkwobi',
+    name: 'Nkwobi',
+    description:
+      'Tender cow foot coated in a rich, spicy palm-oil sauce seasoned with utazi leaves.',
+    price: 15,
+    categoryId: 'meat-and-fish',
+    dietary: ['signature'],
+    spiceLevel: 3,
+  },
+  {
+    id: 'isi-ewu',
+    name: 'Isi Ewu',
+    description:
+      'Tender goat head cooked in a traditional peppered palm-oil sauce with authentic spices.',
+    price: 25,
+    categoryId: 'meat-and-fish',
+    image: dishImages.isiEwu,
+    dietary: ['chef-special'],
+    spiceLevel: 3,
+    isFeatured: true,
+  },
+  {
+    id: 'peppered-beef',
+    name: 'Peppered Beef',
+    description:
+      'Juicy beef cuts stir-fried with peppers, onions and bold spices. Colourful, flavourful and ideal for sharing.',
+    price: 15,
+    categoryId: 'meat-and-fish',
+    dietary: [],
+    spiceLevel: 3,
+  },
+
+  // ------------------------------------------------------------------- SIDES
+  {
+    id: 'fried-plantain',
+    name: 'Fried Plantain',
+    description: 'Sweet ripe plantain fried until the edges caramelise. Everybody orders a second bowl.',
+    price: 5,
+    categoryId: 'sides',
+    image: dishImages.friedPlantain,
+    dietary: ['vegan'],
+    spiceLevel: 0,
+  },
+  {
+    id: 'fried-yam',
+    name: 'Fried Yam',
+    description: 'Crisp golden yam wedges, fluffy inside, served with peppered sauce.',
+    price: 6,
+    categoryId: 'sides',
+    image: dishImages.friedYam,
+    dietary: ['vegan'],
+    spiceLevel: 1,
+  },
+  {
+    id: 'moi-moi',
+    name: 'Moi Moi',
+    description: 'Steamed bean pudding, softly spiced and gently savoury.',
+    price: 5,
+    categoryId: 'sides',
+    dietary: [],
+    spiceLevel: 1,
+  },
+  {
+    id: 'gizzard-dodo',
+    name: 'Gizzard Dodo',
+    description: 'Peppered gizzards tossed with sweet fried plantain — a Nigerian party favourite.',
+    price: 10,
+    categoryId: 'sides',
+    dietary: [],
+    spiceLevel: 2,
+  },
+  {
+    id: 'salad-coleslaw',
+    name: 'Bowl of Salad or Coleslaw',
+    description: 'A fresh, cooling side to balance the heat of the kitchen.',
+    price: 5,
+    categoryId: 'sides',
+    dietary: ['vegetarian'],
+    spiceLevel: 0,
+    options: ['Salad', 'Coleslaw'],
+  },
+  {
+    id: 'meat-pie',
+    name: 'Meat Pie',
+    description:
+      'Golden Nigerian pastry filled with seasoned minced beef, potato and carrot. Baked fresh.',
+    price: null,
+    priceNote: 'Price on request',
+    categoryId: 'sides',
+    image: dishImages.meatPie,
+    dietary: [],
+    spiceLevel: 1,
+  },
+
+  // ---------------------------------------------------------------- DESSERTS
+  {
+    id: 'puff-puff',
+    name: 'Puff Puff',
+    description: 'Warm, pillowy deep-fried dough balls, lightly sweetened. Sold by the portion.',
+    price: 6,
+    categoryId: 'desserts',
+    image: dishImages.puffPuff,
+    dietary: ['vegetarian', 'signature'],
+    spiceLevel: 0,
+    isFeatured: true,
+  },
+  {
+    id: 'ice-cream-medley',
+    name: 'Ice Cream Medley',
+    description: 'A cool, simple finish to a plate of bold Nigerian spice.',
+    price: 5,
+    categoryId: 'desserts',
+    dietary: ['vegetarian'],
+    spiceLevel: 0,
+  },
+
+  // ------------------------------------------------------------------ DRINKS
+  { id: 'coke', name: 'Coke', description: 'Chilled 330ml can.', price: 3, categoryId: 'drinks', dietary: ['vegan'], spiceLevel: 0 },
+  { id: 'diet-coke', name: 'Diet Coke', description: 'Chilled 330ml can.', price: 3, categoryId: 'drinks', dietary: ['vegan'], spiceLevel: 0 },
+  { id: 'fanta', name: 'Fanta', description: 'Chilled 330ml can.', price: 3, categoryId: 'drinks', dietary: ['vegan'], spiceLevel: 0 },
+  { id: 'sprite', name: 'Sprite', description: 'Chilled 330ml can.', price: 3, categoryId: 'drinks', dietary: ['vegan'], spiceLevel: 0 },
+  { id: 'nigerian-fanta', name: 'Nigerian Fanta', description: 'The real thing, imported — sweeter and brighter than the UK recipe.', price: 3, categoryId: 'drinks', dietary: ['vegan'], spiceLevel: 0 },
+  { id: 'malt', name: 'Malt', description: 'Rich, non-alcoholic malt drink.', price: 3, categoryId: 'drinks', dietary: ['vegetarian'], spiceLevel: 0 },
+  { id: 'lemonade', name: 'Lemonade', description: 'Chilled and refreshing.', price: 3, categoryId: 'drinks', dietary: ['vegan'], spiceLevel: 0 },
+  { id: 'tonic-water', name: 'Tonic Water', description: 'Chilled tonic water.', price: 3, categoryId: 'drinks', dietary: ['vegan'], spiceLevel: 0 },
+  { id: 'j2o', name: 'J2O', description: 'Fruit blend soft drink.', price: 3, categoryId: 'drinks', dietary: ['vegan'], spiceLevel: 0 },
+  { id: 'red-bull', name: 'Red Bull', description: 'Chilled energy drink.', price: 3.5, categoryId: 'drinks', dietary: ['vegetarian'], spiceLevel: 0 },
+  { id: 'small-water', name: 'Small Water', description: 'Still bottled water.', price: 1, categoryId: 'drinks', dietary: ['vegan'], spiceLevel: 0 },
+  { id: 'star', name: 'Star', description: 'Nigerian lager. Over 18s only.', price: 7, categoryId: 'drinks', dietary: [], spiceLevel: 0 },
+  { id: 'gulder', name: 'Gulder', description: 'Nigerian lager. Over 18s only.', price: 7, categoryId: 'drinks', dietary: [], spiceLevel: 0 },
+  { id: 'trophy', name: 'Trophy', description: 'Nigerian lager. Over 18s only.', price: 7, categoryId: 'drinks', dietary: [], spiceLevel: 0 },
+  { id: 'heineken', name: 'Heineken', description: 'Premium lager. Over 18s only.', price: 7, categoryId: 'drinks', dietary: [], spiceLevel: 0 },
+  { id: 'stella-artois', name: 'Stella Artois', description: 'Premium lager. Over 18s only.', price: 7, categoryId: 'drinks', dietary: [], spiceLevel: 0 },
+  { id: 'small-guinness', name: 'Small Guinness', description: 'Foreign extra stout. Over 18s only.', price: 4, categoryId: 'drinks', dietary: [], spiceLevel: 0 },
+  { id: 'big-guinness', name: 'Big Guinness', description: 'Foreign extra stout. Over 18s only.', price: 8, categoryId: 'drinks', dietary: [], spiceLevel: 0 },
+  { id: 'red-wine', name: 'Bottle of Red Wine', description: 'House red. Over 18s only.', price: 20, categoryId: 'drinks', dietary: ['vegetarian'], spiceLevel: 0 },
+  { id: 'white-wine', name: 'Bottle of White Wine', description: 'House white. Over 18s only.', price: 20, categoryId: 'drinks', dietary: ['vegetarian'], spiceLevel: 0 },
+]
+
+/** Shown on the menu page — food safety guidance, not a legal allergen matrix. */
+export const allergenNotice =
+  'Our dishes are prepared in a kitchen that handles peanuts, fish, shellfish, gluten and dairy. Please tell us about any allergies or dietary requirements when you order and our team will guide you.'

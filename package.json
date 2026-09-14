@@ -1,0 +1,38 @@
+{
+  "name": "dilly-kitchen",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build && node scripts/scan-secrets.mjs",
+    "lint": "oxlint",
+    "preview": "vite preview",
+    "seed:generate": "node --experimental-strip-types --import ./scripts/register-ts.mjs scripts/generate-seed.mjs",
+    "db:push": "supabase db push",
+    "verify:supabase": "node scripts/verify-supabase.mjs",
+    "verify:admin": "node scripts/verify-admin.mjs",
+    "scan:secrets": "node scripts/scan-secrets.mjs",
+    "verify:clean": "node scripts/clean-verification-rows.mjs",
+    "verify:pages": "node scripts/verify-pages.mjs",
+    "verify:forms": "node scripts/verify-forms.mjs"
+  },
+  "dependencies": {
+    "@supabase/postgrest-js": "^2.112.4",
+    "@supabase/supabase-js": "^2.112.4",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-router-dom": "^7.18.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.4",
+    "oxlint": "^1.75.0",
+    "tailwindcss": "^4.3.3",
+    "typescript": "~6.0.2",
+    "vite": "^8.2.0"
+  }
+}

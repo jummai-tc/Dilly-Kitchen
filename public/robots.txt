@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Staff area — not linked from anywhere on the site and not for indexing.
+Disallow: /admin
+
+Sitemap: https://www.dillykitchen.co.uk/sitemap.xml

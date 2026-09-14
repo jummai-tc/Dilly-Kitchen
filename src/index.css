@@ -1,0 +1,376 @@
+@import 'tailwindcss';
+
+/* ------------------------------------------------------------------
+   Self-hosted fonts (Latin subsets, variable weight axes).
+   Self-hosted rather than loaded from Google Fonts: no third-party
+   request on every page view, no render-blocking round trip, and no
+   personal data leaving the site — which matters for a UK business.
+   Regenerate with scripts/fetch-fonts.mjs.
+   ------------------------------------------------------------------ */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/inter-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/inter-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/fraunces-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Fraunces';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/fraunces-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ------------------------------------------------------------------
+   Dilly Kitchen design tokens
+   Palette is taken directly from the DK logo: signal yellow on black,
+   warmed with gold and cream for a premium African-inspired feel.
+   ------------------------------------------------------------------ */
+@theme {
+  /* Brand yellow — sampled from the logo (#FFF200) */
+  --color-brand-50: #fffde6;
+  --color-brand-100: #fffab8;
+  --color-brand-200: #fff780;
+  --color-brand-300: #fff44d;
+  --color-brand-400: #fff21f;
+  --color-brand-500: #fff200;
+  --color-brand-600: #e0d400;
+  --color-brand-700: #b3a900;
+  --color-brand-800: #857e00;
+
+  /* Warm gold — premium secondary for rules, icons and small accents */
+  --color-gold-300: #f0d68a;
+  --color-gold-400: #e3bd5a;
+  --color-gold-500: #cfa235;
+  --color-gold-600: #a87f24;
+  /* gold-700 clears WCAG AA (5.0:1) for small text on cream/white. */
+  --color-gold-700: #8a6718;
+
+  /* Ink — the logo black, softened so large areas do not feel flat */
+  --color-ink-500: #4a453d;
+  --color-ink-600: #38332c;
+  --color-ink-700: #26221d;
+  --color-ink-800: #171512;
+  --color-ink-900: #0f0e0c;
+  --color-ink-950: #080807;
+
+  /* Cream — light surfaces */
+  --color-cream-50: #fdfbf6;
+  --color-cream-100: #f8f3e9;
+  --color-cream-200: #efe7d6;
+  --color-cream-300: #e2d5bd;
+
+  /* WhatsApp green, darkened from #25D366 so white text clears WCAG AA (5.4:1) */
+  --color-whatsapp: #137a43;
+  --color-whatsapp-dark: #0f6437;
+
+  /* Spice — used sparingly for heat indicators only */
+  --color-spice-500: #c0491f;
+  --color-spice-600: #9a3616;
+
+  --font-display: 'Fraunces', 'Iowan Old Style', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --radius-card: 1.25rem;
+
+  --shadow-soft: 0 1px 2px rgb(15 14 12 / 0.04), 0 8px 24px -12px rgb(15 14 12 / 0.14);
+  --shadow-lift: 0 2px 4px rgb(15 14 12 / 0.06), 0 18px 40px -16px rgb(15 14 12 / 0.28);
+  --shadow-glow: 0 12px 40px -12px rgb(255 242 0 / 0.35);
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-fade-up: fade-up 0.7s var(--ease-out-soft) both;
+  --animate-fade-in: fade-in 0.6s var(--ease-out-soft) both;
+  --animate-room-settle: room-settle 1.5s var(--ease-out-soft) both;
+  --animate-line-rise: line-rise 0.9s var(--ease-out-soft) both;
+  --animate-scroll-cue: scroll-cue 2.6s var(--ease-out-soft) infinite;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Home hero load sequence — the room settles, then the type rises line by line. */
+@keyframes room-settle {
+  from {
+    opacity: 0;
+    transform: scale(1.09);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes line-rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.9em);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The chevron that invites the first scroll. Deliberately slow — it should
+   read as a breath, not a nudge. */
+@keyframes scroll-cue {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(0.4rem);
+  }
+}
+
+/* ------------------------------------------------------------------
+   Base
+   ------------------------------------------------------------------ */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Offset anchor targets so the fixed header never covers a heading. */
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /*
+    `clip` rather than `hidden`: it stops the off-canvas mobile drawer creating
+    horizontal scroll without turning the page into a scroll container, which
+    would break `position: sticky`.
+  */
+  html,
+  body {
+    overflow-x: clip;
+  }
+
+  body {
+    background-color: var(--color-cream-50);
+    color: var(--color-ink-800);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    color: var(--color-ink-900);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /*
+    Focus ring. Brand yellow only clears ~1.1:1 against cream/white, so light
+    surfaces get an ink ring (19:1) and dark surfaces get the yellow one —
+    both well past the 3:1 that WCAG 2.2 asks of a focus indicator.
+    `transition: none` keeps the indicator instant rather than fading in.
+  */
+  :focus-visible {
+    outline: 3px solid var(--color-ink-900);
+    outline-offset: 3px;
+    border-radius: 0.35rem;
+    transition: none;
+  }
+
+  .on-dark :focus-visible,
+  .surface-dark :focus-visible {
+    outline-color: var(--color-brand-500);
+  }
+
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  ::selection {
+    background-color: var(--color-brand-500);
+    color: var(--color-ink-900);
+  }
+}
+
+/* ------------------------------------------------------------------
+   Utilities
+   ------------------------------------------------------------------ */
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+/* Warm, dark section background with a subtle radial glow. */
+@utility surface-dark {
+  background-color: var(--color-ink-900);
+  background-image:
+    radial-gradient(70% 55% at 15% 0%, rgb(255 242 0 / 0.07), transparent 70%),
+    radial-gradient(60% 60% at 90% 100%, rgb(207 162 53 / 0.09), transparent 70%);
+  color: var(--color-cream-100);
+}
+
+/* Thin brand rule used under section eyebrows. */
+@utility brand-rule {
+  display: inline-block;
+  width: 2.5rem;
+  height: 2px;
+  background-color: var(--color-brand-500);
+}
+
+@layer components {
+  /* Screen-reader-only helper that becomes visible when focused. */
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+    z-index: 100;
+    transform: translateY(-150%);
+    transition: transform 0.2s var(--ease-out-soft);
+    background-color: var(--color-brand-500);
+    color: var(--color-ink-900);
+    font-weight: 600;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.75rem;
+  }
+
+  .skip-link:focus-visible {
+    transform: translateY(0);
+  }
+}
+
+/* ------------------------------------------------------------------
+   Room details
+   The dining room in Feltham is black leather and cream tile bounded by
+   thin brass table trim. These utilities carry that trim into the page,
+   so the structure of the site is built from the material of the room.
+   ------------------------------------------------------------------ */
+
+/* Fraunces is a variable face with an optical-size axis. Large type gets the
+   display cut (high stroke contrast, tight fit); body-sized headings get the
+   text cut, which stays readable. Setting `opsz` by hand rather than letting
+   the browser guess is what keeps the headline from looking like "a serif". */
+@utility display-hero {
+  font-family: var(--font-display);
+  font-variation-settings: 'opsz' 144;
+  font-weight: 600;
+  line-height: 0.92;
+  letter-spacing: -0.034em;
+}
+
+@utility display-section {
+  font-variation-settings: 'opsz' 96;
+  line-height: 1.02;
+  letter-spacing: -0.026em;
+}
+
+/* Brass hairline — the table edge. Fades out at both ends so it reads as a
+   trim detail rather than a border. */
+@utility rule-brass {
+  height: 1px;
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    rgb(207 162 53 / 0.5) 12%,
+    rgb(207 162 53 / 0.5) 88%,
+    transparent
+  );
+}
+
+/* Dashed leader between a dish name and its price, the way a printed menu
+   sets it. Takes its colour from the surrounding text. */
+@utility leader {
+  height: 1px;
+  background-image: repeating-linear-gradient(
+    to right,
+    currentColor 0 2px,
+    transparent 2px 6px
+  );
+  opacity: 0.3;
+}
+
+/* Fine film grain over dark photographic panels: stops large near-black
+   fields from banding, and keeps the hero photograph from looking plasticky
+   where it is scaled up on very wide screens. */
+@utility film-grain {
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0.055;
+    mix-blend-mode: overlay;
+    background-size: 180px 180px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+/* Numerals that line up in columns — prices, phone numbers, hours. */
+@utility tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}

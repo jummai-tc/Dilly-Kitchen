@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0f0e0c" />
+
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!--
+      Default metadata for crawlers that do not execute JavaScript.
+      Per-route titles and descriptions are applied at runtime by
+      `src/components/seo/Seo.tsx`.
+    -->
+    <title>Dilly Kitchen | Nigerian Restaurant & Catering in Feltham, London</title>
+    <meta
+      name="description"
+      content="Dilly Kitchen serves fresh Nigerian and Pan-African food in Feltham, London. Jollof rice, traditional soups, suya and full catering for weddings, birthdays and corporate events."
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Dilly Kitchen" />
+    <link rel="canonical" href="https://www.dillykitchen.co.uk/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Dilly Kitchen" />
+    <meta property="og:locale" content="en_GB" />
+    <meta
+      property="og:title"
+      content="Dilly Kitchen | Nigerian Restaurant & Catering in Feltham, London"
+    />
+    <meta
+      property="og:description"
+      content="Fresh Nigerian and Pan-African cuisine in Feltham, London. Jollof rice, traditional soups, suya and catering across London."
+    />
+    <meta property="og:url" content="https://www.dillykitchen.co.uk/" />
+    <meta
+      property="og:image"
+      content="https://www.dillykitchen.co.uk/images/dishes/jollof-rice-chicken-1400.jpg"
+    />
+    <meta property="og:image:alt" content="Nigerian jollof rice with grilled chicken from Dilly Kitchen" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Dilly Kitchen | Nigerian Restaurant & Catering in Feltham, London"
+    />
+    <meta
+      name="twitter:description"
+      content="Fresh Nigerian and Pan-African cuisine in Feltham, London. Jollof rice, traditional soups, suya and catering across London."
+    />
+    <meta
+      name="twitter:image"
+      content="https://www.dillykitchen.co.uk/images/dishes/jollof-rice-chicken-1400.jpg"
+    />
+
+    <!-- Fonts are self-hosted (see src/index.css); preload the Latin subsets. -->
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/fraunces-latin.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/inter-latin.woff2" crossorigin />
+
+    <!--
+      Preload the two dishes that are already at the mouth of the home hero's
+      corridor on the first frame. `imagesizes` has to match the `sizes` the
+      cards render with (the 34vw default in ImageStreamHero) or the browser
+      fetches the file a second time.
+    -->
+    <link
+      rel="preload"
+      as="image"
+      type="image/jpeg"
+      href="/images/dishes/jollof-rice-chicken-480.jpg"
+      imagesrcset="/images/dishes/jollof-rice-chicken-480.jpg 480w, /images/dishes/jollof-rice-chicken-800.jpg 800w, /images/dishes/jollof-rice-chicken-1400.jpg 1400w"
+      imagesizes="34vw"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      as="image"
+      type="image/jpeg"
+      href="/images/dishes/beef-suya-480.jpg"
+      imagesrcset="/images/dishes/beef-suya-480.jpg 480w, /images/dishes/beef-suya-800.jpg 800w, /images/dishes/beef-suya-1400.jpg 1400w"
+      imagesizes="34vw"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <noscript>
+      <p style="padding: 2rem; font-family: sans-serif">
+        Dilly Kitchen — Nigerian and Pan-African cuisine, 100 High Street, Feltham, TW13 4EX,
+        London. Open daily 3:00 PM to 12:00 AM. WhatsApp +44 7535 502212. Please enable JavaScript
+        to view the full site.
+      </p>
+    </noscript>
+  </body>
+</html>
