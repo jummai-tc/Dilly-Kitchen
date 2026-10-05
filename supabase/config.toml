@@ -156,12 +156,12 @@ max_indexes = 5
 enabled = true
 # The base URL of your website. Used as an allow-list for redirects and for constructing URLs used
 # in emails.
-site_url = "https://www.dillykitchen.co.uk"
+site_url = "https://dillykitchenuk.com"
 # The public URL that Auth serves on. Defaults to the API external URL with `/auth/v1` appended.
 # external_url = ""
 # A list of *exact* URLs that auth providers are permitted to redirect to post authentication.
 # The Vite dev server, so an admin can sign in while working locally.
-additional_redirect_urls = ["http://localhost:5173", "https://www.dillykitchen.co.uk"]
+additional_redirect_urls = ["http://localhost:5173", "https://dillykitchenuk.com"]
 # How long tokens are valid for, in seconds. Defaults to 3600 (1 hour), maximum 604,800 (1 week).
 jwt_expiry = 3600
 # JWT issuer URL. If not set, defaults to auth.external_url.

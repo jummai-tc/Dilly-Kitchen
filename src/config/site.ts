@@ -17,7 +17,7 @@ export const siteConfig = {
   metaDescription:
     'Dilly Kitchen serves fresh Nigerian and Pan-African food in Feltham, London. Jollof rice, traditional soups, suya and full catering for weddings, birthdays and corporate events.',
 
-  url: 'https://www.dillykitchen.co.uk', // PLACEHOLDER — replace with the live domain
+  url: 'https://dillykitchenuk.com',
   ogImage: '/images/dishes/jollof-rice-chicken-1400.jpg',
 
   contact: {

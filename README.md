@@ -133,7 +133,7 @@ broken link or an invented URL.
 | -------------------- | ----------------------------------------------------------------------------- |
 | **Google Reviews**   | `isPlaceholder: true` — buttons open a short “link is being set up” panel offering WhatsApp instead |
 | **Instagram / Facebook / TikTok** | `isPlaceholder: true` — footer shows a “Soon” label rather than a dead link |
-| **Live domain**      | `siteConfig.url` is `https://www.dillykitchen.co.uk` — update it, and the matching URLs in `public/sitemap.xml` and `public/robots.txt` |
+| **Live domain**      | `siteConfig.url` is `https://dillykitchenuk.com` — keep it in step with the URLs in `index.html`, `public/sitemap.xml` and `public/robots.txt` |
 
 To go live with any of them: paste the URL into `href` and set
 `isPlaceholder: false`. Nothing else needs to change.
